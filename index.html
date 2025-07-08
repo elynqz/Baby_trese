@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>For Baby Trese</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ffe4f0, #ffddee);
+      font-family: 'Comic Sans MS', cursive;
+      text-align: center;
+      padding: 40px;
+      color: #000;
+    }
+
+    h1, p {
+      font-size: 1.3em;
+      margin: 10px 0 20px 0;
+    }
+
+    button {
+      background-color: #f29acb;
+      border: none;
+      color: white;
+      padding: 15px 35px;
+      margin: 15px;
+      border-radius: 30px;
+      font-size: 1.1em;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e66fb2;
+      transform: scale(1.05);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .fade {
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .fade.show {
+      opacity: 1;
+    }
+
+    .cat {
+      width: 200px;
+      margin-top: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    #typewriter, #typedFinal {
+      font-size: 1.4em;
+      white-space: pre-wrap;
+      min-height: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slide 1 -->
+  <div id="slide1">
+    <h1>Hello! Baby Trese</h1>
+    <img src="https://media1.tenor.com/m/lUFliafCu_MAAAAC/hello.gif" alt="Hello Sticker" class="cat" loading="lazy">
+    <br>
+    <button onclick="goToSlide2()">Continue</button>
+  </div>
+
+  <!-- Slide 2 -->
+  <div id="slide2" class="hidden">
+    <h1 id="typewriter"></h1>
+    <img id="sticker1" src="https://media.tenor.com/arucnQ85wpUAAAAi/mochi-cat-what.gif" alt="Question Sticker" class="cat hidden" loading="lazy">
+    <br>
+    <button id="questionBtn" onclick="showQuestion()" class="hidden">What is the question?</button>
+  </div>
+
+  <!-- Slide 3: Question -->
+  <div id="step2" class="hidden fade">
+    <h1 id="questionTitle">Hello Baby Trese</h1>
+    <p id="questionText">Would you go on a date with me?</p>
+    <div id="answerButtons">
+      <button onclick="sayYes()">Yes</button>
+      <button id="noBtn" onclick="sayNo()">No</button>
+    </div>
+  </div>
+
+  <!-- Slide 4: First result -->
+  <div id="yesResult" class="hidden section fade">
+    <p>Yeyy! Let's have a date after 2 weeks</p>
+    <img src="https://media1.tenor.com/m/NW65h_Frvx0AAAAC/bubu-kiss-peach-kiss.gif" alt="Cute Cat" class="cat" loading="lazy">
+    <br>
+    <button onclick="showFinalSlide()">Continue</button>
+  </div>
+
+  <!-- Slide 5: Final Message -->
+  <div id="finalSlide" class="hidden section fade">
+    <h1 id="typedFinal"></h1>
+    <img src="https://media1.tenor.com/m/9ugBYqAZU3gAAAAC/love-i-love-you.gif" alt="Love Sticker" class="cat" loading="lazy">
+    <br>
+    <button onclick="exitMessage()">Exit</button>
+  </div>
+
+  <script>
+    const text = "Before anything else...<br>I would like to ask you a question.";
+    const typeTarget = document.getElementById("typewriter");
+    const questionBtn = document.getElementById("questionBtn");
+    const sticker1 = document.getElementById("sticker1");
+    let i = 0;
+
+    function goToSlide2() {
+      document.getElementById("slide1").classList.add("hidden");
+      document.getElementById("slide2").classList.remove("hidden");
+      setTimeout(typeWriter, 500);
+    }
+
+    function typeWriter() {
+      if (i < text.length) {
+        const char = text.charAt(i);
+        if (char === "<") {
+          let tag = "";
+          while (text.charAt(i) !== ">" && i < text.length) {
+            tag += text.charAt(i);
+            i++;
+          }
+          tag += ">";
+          typeTarget.innerHTML += tag;
+          i++;
+        } else {
+          typeTarget.innerHTML += char;
+          i++;
+        }
+        setTimeout(typeWriter, 45);
+      } else {
+        sticker1.classList.remove("hidden");
+        questionBtn.classList.remove("hidden");
+      }
+    }
+
+    function showQuestion() {
+      document.getElementById("slide2").classList.add("hidden");
+      const step2 = document.getElementById("step2");
+      step2.classList.remove("hidden");
+      setTimeout(() => step2.classList.add("show"), 100);
+    }
+
+    function sayYes() {
+      document.getElementById("questionTitle").classList.add("hidden");
+      document.getElementById("questionText").classList.add("hidden");
+      document.getElementById("answerButtons").classList.add("hidden");
+
+      const result = document.getElementById("yesResult");
+      result.classList.remove("hidden");
+      result.classList.add("show");
+    }
+
+    function sayNo() {
+      const result = document.getElementById("yesResult");
+      const noButton = document.getElementById("noBtn");
+
+      result.classList.add("hidden");
+      result.classList.remove("show");
+
+      noButton.disabled = true;
+      noButton.style.opacity = "0.4";
+      noButton.style.cursor = "not-allowed";
+
+      alert("No is not an option hehe 😘");
+    }
+
+    function showFinalSlide() {
+      const result = document.getElementById("yesResult");
+      const final = document.getElementById("finalSlide");
+
+      result.classList.add("hidden");
+      final.classList.remove("hidden");
+      setTimeout(() => final.classList.add("show"), 100);
+
+      typeFinalMessage("I love you. It's settled then, I will see you. Mwah.");
+    }
+
+    function typeFinalMessage(message) {
+      const target = document.getElementById("typedFinal");
+      target.innerHTML = "";
+      let j = 0;
+      function type() {
+        if (j < message.length) {
+          target.innerHTML += message.charAt(j);
+          j++;
+          setTimeout(type, 50);
+        }
+      }
+      type();
+    }
+
+    function exitMessage() {
+      alert("Bye bye Baby Trese 💖");
+    }
+  </script>
+
+</body>
+</html>
